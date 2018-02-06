@@ -40,6 +40,41 @@ create table @results_database_schema.IR_cohort_summary
 )
 ;
 
+--create IR exposure outcome summary
+IF OBJECT_ID('@result_database_schema.IR_exposure_outcome_summary ', 'U') IS NOT NULL
+	drop table @result_database_schema.IR_exposure_outcome_summary ;
+
+CREATE TABLE @results_database_schema.IR_exposure_outcome_summary (
+	target_cohort_definition_id int NOT NULL,
+	outcome_cohort_definition_id bigint NULL,
+	num_persons int NULL,
+	num_persons_prior_outcome int NULL,
+	num_persons_at_risk int NULL,
+	num_persons_post_30d int NULL,
+	pt_30d numeric(38, 6) NULL,
+	ip_30d numeric(24, 12) NULL,
+	ir_30d numeric(38, 20) NULL,
+	num_persons_post_365d int NULL,
+	pt_365d numeric(38, 6) NULL,
+	ip_365d numeric(24, 12) NULL,
+	ir_365d numeric(38, 20) NULL,
+	num_persons_post_pp int NULL,
+	pt_pp numeric(38, 6) NULL,
+	ip_pp numeric(24, 12) NULL,
+	ir_pp numeric(38, 20) NULL,
+	num_persons_post_itt int NULL,
+	pt_itt numeric(38, 6) NULL,
+	ip_itt numeric(24, 12) NULL,
+	ir_itt numeric(38, 20) NULL,
+	num_persons_at_risk_30d_fulltime int NULL,
+	pt_30d_fulltime numeric(38, 6) NULL,
+	ip_30d_fulltime numeric(24, 12) NULL,
+	ir_30d_fulltime numeric(38, 20) NULL,
+	num_persons_at_risk_365d_fulltime int NULL,
+	pt_365d_fulltime numeric(38, 6) NULL,
+	ip_365d_fulltime numeric(24, 12) NULL,
+	ir_365d_fulltime numeric(38, 20) NULL
+)
 
 
 /************************************************
@@ -329,52 +364,7 @@ on d1.cohort_definition_id = do1.target_cohort_definition_id
 
 
 
---create cohort summary
-/*
-IF OBJECT_ID('@result_database_schema.@incidence_summary_table', 'U') IS NOT NULL
-	drop table @result_database_schema.@incidence_summary_table;
-*/
-IF OBJECT_ID('@results_database_schema.IR_exposure_outcome_summary', 'U') IS NOT NULL
-	drop table @results_database_schema.IR_exposure_outcome_summary;
 
-/*create table @result_database_schema.@incidence_summary_table */
-create table @results_database_schema.IR_exposure_outcome_summary  as
-BEGIN TRY
-select dos1.target_cohort_definition_id,
-	dos1.outcome_cohort_definition_id,
-	dos1.num_persons,
-	dos1.num_persons_prior_outcome,
-	dos1.num_persons_at_risk,
-	case when dos1.num_persons_post_30d > 10 then dos1.num_persons_post_30d else null end as num_persons_post_30d,
-	dos1.pt_30d,
-	case when dos1.num_persons_post_30d > 10 and dos1.num_persons_at_risk > 0 then 1.0*dos1.num_persons_post_30d / dos1.num_persons_at_risk else null end as ip_30d,
-	case when dos1.num_persons_post_30d > 10 and dos1.pt_30d > 0 then 1.0*dos1.num_persons_post_30d / dos1.pt_30d else null end as ir_30d,
-	case when dos1.num_persons_post_365d > 10 then dos1.num_persons_post_365d else null end as num_persons_post_365d,
-	dos1.pt_365d,
-	case when dos1.num_persons_post_365d > 10 and dos1.num_persons_at_risk > 0 then 1.0*dos1.num_persons_post_365d / dos1.num_persons_at_risk else null end as ip_365d,
-	case when dos1.num_persons_post_365d > 10 and dos1.pt_365d > 0 then 1.0*dos1.num_persons_post_365d / dos1.pt_365d else null end as ir_365d,
-	case when dos1.num_persons_post_pp > 10 then dos1.num_persons_post_pp else null end as num_persons_post_pp,
-	dos1.pt_pp,
-	case when dos1.num_persons_post_pp > 10 and dos1.num_persons_at_risk > 0 then 1.0*dos1.num_persons_post_pp / dos1.num_persons_at_risk else null end as ip_pp,
-	case when dos1.num_persons_post_pp > 10 and dos1.pt_pp > 0 then 1.0*dos1.num_persons_post_pp / dos1.pt_pp else null end as ir_pp,
-	case when dos1.num_persons_post_itt > 10 then dos1.num_persons_post_itt else null end as num_persons_post_itt,
-	dos1.pt_itt,
-	case when dos1.num_persons_post_itt > 10 and dos1.num_persons_at_risk > 0 then 1.0*dos1.num_persons_post_itt / dos1.num_persons_at_risk else null end as ip_itt,
-	case when dos1.num_persons_post_itt > 10 and dos1.pt_itt > 0 then 1.0*dos1.num_persons_post_itt / dos1.pt_itt else null end as ir_itt,
-	dos1.num_persons_at_risk_30d_fulltime,
-	dos1.pt_30d_fulltime,
-	case when dos1.num_persons_post_30d > 10 and dos1.num_persons_at_risk_30d_fulltime > 0 then 1.0*dos1.num_persons_post_30d / dos1.num_persons_at_risk_30d_fulltime else null end as ip_30d_fulltime,
-	case when dos1.num_persons_post_30d > 10 and dos1.pt_30d_fulltime > 0 then 1.0*dos1.num_persons_post_30d / dos1.pt_30d_fulltime else null end as ir_30d_fulltime,
-	dos1.num_persons_at_risk_365d_fulltime,
-	dos1.pt_365d_fulltime,
-	case when dos1.num_persons_post_365d > 10 and dos1.num_persons_at_risk_365d_fulltime > 0 then 1.0*dos1.num_persons_post_365d / dos1.num_persons_at_risk_365d_fulltime else null end as ip_365d_fulltime,
-	case when dos1.num_persons_post_365d > 10 and dos1.pt_365d_fulltime > 0 then 1.0*dos1.num_persons_post_365d / dos1.pt_365d_fulltime else null end as ir_365d_fulltime
-into @results_database_schema.IR_exposure_outcome_summary
-from #drug_outcome_summary dos1
-where dos1.num_persons_post_itt > 10
-;
-END TRY
-BEGIN CATCH
 insert into @results_database_schema.IR_exposure_outcome_summary
 	select dos1.target_cohort_definition_id,
 		dos1.outcome_cohort_definition_id,
@@ -407,4 +397,4 @@ insert into @results_database_schema.IR_exposure_outcome_summary
 		case when dos1.num_persons_post_365d > 10 and dos1.pt_365d_fulltime > 0 then 1.0*dos1.num_persons_post_365d / dos1.pt_365d_fulltime else null end as ir_365d_fulltime
 	from #drug_outcome_summary dos1
 	where dos1.num_persons_post_itt > 10
-END CATCH;
+;
