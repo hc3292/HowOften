@@ -16,7 +16,8 @@ Getting Started
   library(devtools)
   install_github("ohdsi/SqlRender")
   install_github("ohdsi/DatabaseConnector")
-  source('HowOften.R') #you should be running R from the directory where this script is located or qualify the path
+  install_github("cukarthik/HowOften")
+  #source('HowOften.R') #you should be running R from the directory where this script is located or qualify the path
   ```
   
 4. To run the HowOften analysis, use the following commands in R: 
