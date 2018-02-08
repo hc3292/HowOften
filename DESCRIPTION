@@ -6,8 +6,8 @@ Author: Karthik Natarajan
 Maintainer: The package maintainer 
 Description: This analysis calculates the observed risk in a population for all drugs and conditions in a dataset.
 Depends:
-    DatabaseConnector (>= 1.10.0),
-    SqlRender
+    SqlRender,
+    DatabaseConnector (>= 1.10.0)
 License: Apache License 2.0
 Encoding: UTF-8
 LazyData: true
