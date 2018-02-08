@@ -2,8 +2,8 @@ Package: HowOften
 Type: Package
 Title: Test
 Version: 0.1.0
-Author: Karthik Natarajan <kn2174@cumc.columbia.edu>
-Maintainer: The package maintainer 
+Author: Karthik Natarajan 
+Maintainer: Karthik Natarajan <kn2174@cumc.columbia.edu>
 Description: This analysis calculates the observed risk in a population for all drugs and conditions in a dataset.
 Depends:
     SqlRender,
