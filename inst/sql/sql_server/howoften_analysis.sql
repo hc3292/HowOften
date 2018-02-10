@@ -163,7 +163,7 @@ on ca1.ancestor_concept_id = t1.concept_id
 ;
 
 
-select count(*) from #concept_anc_group
+select count(*) from #concept_anc_group;
 
 
 --outcome cohorts 1:  first diagnosis of any sort
