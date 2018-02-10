@@ -31,8 +31,8 @@ create table @results_database_schema.IR_cohort_summary
 ;
 
 --create IR exposure outcome summary
-IF OBJECT_ID('@result_database_schema.IR_exposure_outcome_summary', 'U') IS NOT NULL
-	drop table @result_database_schema.IR_exposure_outcome_summary ;
+IF OBJECT_ID('@results_database_schema.IR_exposure_outcome_summary', 'U') IS NOT NULL
+	drop table @results_database_schema.IR_exposure_outcome_summary ;
 
 CREATE TABLE @results_database_schema.IR_exposure_outcome_summary (
 	target_cohort_definition_id int NOT NULL,
