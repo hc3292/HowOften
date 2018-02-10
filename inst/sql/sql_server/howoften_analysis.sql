@@ -6,14 +6,9 @@
 
 
 --create cohort definition
-/*
-IF OBJECT_ID('@result_database_schema.@cohort_definition_table', 'U') IS NOT NULL
-	drop table @result_database_schema.@cohort_definition_table;
-*/
 IF OBJECT_ID('@results_database_schema.IR_cohort_definition', 'U') IS NOT NULL
 	drop table @results_database_schema.IR_cohort_definition;
 
-/*create table @result_database_schema.@cohort_definition_table */
 create table @results_database_schema.IR_cohort_definition
 (
 	cohort_definition_id bigint,
@@ -25,14 +20,9 @@ create table @results_database_schema.IR_cohort_definition
 
 
 --create cohort summary
-/*
-IF OBJECT_ID('@result_database_schema.@cohort_summary_table ', 'U') IS NOT NULL
-	drop table @result_database_schema.@cohort_summary_table ;
-*/
 IF OBJECT_ID('@results_database_schema.IR_cohort_summary', 'U') IS NOT NULL
 	drop table @results_database_schema.IR_cohort_summary;
 
-/*create table @result_database_schema.@cohort_summary_table*/
 create table @results_database_schema.IR_cohort_summary
 (
 	cohort_definition_id bigint,
@@ -41,7 +31,7 @@ create table @results_database_schema.IR_cohort_summary
 ;
 
 --create IR exposure outcome summary
-IF OBJECT_ID('@result_database_schema.IR_exposure_outcome_summary ', 'U') IS NOT NULL
+IF OBJECT_ID('@result_database_schema.IR_exposure_outcome_summary', 'U') IS NOT NULL
 	drop table @result_database_schema.IR_exposure_outcome_summary ;
 
 CREATE TABLE @results_database_schema.IR_exposure_outcome_summary (
