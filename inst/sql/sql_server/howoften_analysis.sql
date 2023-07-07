@@ -244,7 +244,7 @@ from
 select distinct cohort_definition_id
 from #outcome_cohort
 ) e1
-inner join concept c1
+inner join @cdm_database_schema.concept c1
 on left(e1.cohort_definition_id, len(e1.cohort_definition_id)-2) = c1.concept_id
 ;
 
